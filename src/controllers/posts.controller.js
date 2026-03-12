@@ -1,8 +1,7 @@
-const getAllPosts = (req, res) => {
-  const posts = [
-    { id: "1", title: "First Blog Post" },
-    { id: "2", title: "Second Blog Post" }
-  ];
+const postsService = require("../services/posts.service");
+
+const getAllPosts = async (req, res) => {
+  const posts = await postsService.getAllPosts();
 
   res.status(200).json({
     success: true,
@@ -10,13 +9,8 @@ const getAllPosts = (req, res) => {
   });
 };
 
-const getPostById = (req, res) => {
-  const postId = req.params.postId;
-
-  const post = {
-    id: postId,
-    title: "Sample Blog Post"
-  };
+const getPostById = async (req, res) => {
+  const post = await postsService.getPostById(req.params.id);
 
   res.status(200).json({
     success: true,
@@ -24,7 +18,37 @@ const getPostById = (req, res) => {
   });
 };
 
+const createPost = async (req, res) => {
+  const post = await postsService.createPost(req.body);
+
+  res.status(201).json({
+    success: true,
+    data: post
+  });
+};
+
+const updatePost = async (req, res) => {
+  const post = await postsService.updatePost(req.params.id, req.body);
+
+  res.status(200).json({
+    success: true,
+    data: post
+  });
+};
+
+const deletePost = async (req, res) => {
+  await postsService.deletePost(req.params.id);
+
+  res.status(200).json({
+    success: true,
+    data: null
+  });
+};
+
 module.exports = {
   getAllPosts,
-  getPostById
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost
 };

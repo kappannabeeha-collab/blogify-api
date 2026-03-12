@@ -1,16 +1,19 @@
+require("dotenv").config();
 const express = require("express");
+
+const connectDB = require("./config/db");
+const routes = require("./routes");
+
 const app = express();
 
-const apiRoutes = require("./routes");
+connectDB();
 
-const PORT = 3000;
-
-// global middleware
 app.use(express.json());
 
-// mount master router
-app.use("/api/v1", apiRoutes);
+app.use("/api/v1", routes);
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
